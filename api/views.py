@@ -1,10 +1,9 @@
 from functools import partial
 from django.shortcuts import render
 import io
-import requests
 from rest_framework.parsers import JSONParser
 from rest_framework.renderers import JSONRenderer
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
 from .models import Student
 from .serializers import StudentSerializer
 from django.views.decorators.csrf import csrf_exempt
@@ -74,5 +73,6 @@ def student_api(request):
     stu = Student.objects.get(id=id)
     stu.delete()
     res = {'msg': 'Data Deleted !!'}
-    json_data = JSONRenderer().render(res)
-    return HttpResponse(json_data, content_type='application/json')
+    # json_data = JSONRenderer().render(res)
+    # return HttpResponse(json_data, content_type='application/json')
+    return JsonResponse(res, safe=False)# safe = False for it works for not dictionary value as well
