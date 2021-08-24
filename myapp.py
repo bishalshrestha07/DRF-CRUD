@@ -14,7 +14,7 @@ def get_data(id = None):
   data = res.json()
   print(data)
 
-get_data()
+# get_data()
 
 def post_data():
   data = {
@@ -29,3 +29,17 @@ def post_data():
   print(data)
 
 # post_data()
+
+def update_data():
+  data = {
+    'id':4,
+    'name': 'Bishal Thapa',
+    'roll': 14,
+  }
+
+  json_data = json.dumps(data)
+  res = requests.put(url = URL, data = json_data)
+  data = res.json()
+  print(data)
+
+update_data()
