@@ -5,8 +5,9 @@ from rest_framework.renderers import JSONRenderer
 from django.http import HttpResponse
 from .models import Student
 from .serializers import StudentSerializer
+from django.views.decorators.csrf import csrf_exempt
 
-
+@csrf_exempt
 def student_api(request):
   if request.method == 'GET':
     # storing the json data from third party request to json_data
@@ -30,3 +31,20 @@ def student_api(request):
     serialized_data = StudentSerializer(stu,many=True)
     json_data = JSONRenderer().render(serialized_data.data)
     return HttpResponse(json_data,content_type='application/json')
+
+  if request.method == 'POST':
+    json_data = request.body
+    stream = io.BytesIO(json_data)
+    pythonData = JSONParser().parse(stream)
+    serialized_data = StudentSerializer(data = pythonData)
+
+    if serialized_data.is_valid():
+     # save the student object to the database
+     serialized_data.save()
+     # response to the client
+     res = {'msg':'Data Created Successfully'}
+     #conversion into json
+     json_data = JSONRenderer().render(res)
+     return HttpResponse(json_data, content_type='application/json')
+    json_data = JSONRenderer().render(serialized_data.errors)
+    return HttpResponse(json_data, content_type='application/json')

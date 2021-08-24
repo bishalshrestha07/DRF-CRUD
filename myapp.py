@@ -15,3 +15,17 @@ def get_data(id = None):
   print(data)
 
 get_data()
+
+def post_data():
+  data = {
+    'name': 'Sanish',
+    'roll': 36,
+    'city':'Pokhara'
+  }
+
+  json_data = json.dumps(data)
+  res = requests.post(url = URL, data = json_data)
+  data = res.json()
+  print(data)
+
+# post_data()
